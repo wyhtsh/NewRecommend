@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName"
+			value="com.mysql.jdbc.Driver">
+		</property>
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/BigData?useUnicode=true&amp;characterEncoding=utf8">
+		</property>
+		<property name="username" value="root"></property>
+		<property name="password" value="root"></property>
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLDialect
+				</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>org/yeahwa/news/model/UserNew.hbm.xml</value>
+				<value>org/yeahwa/news/model/KeyWord.hbm.xml</value>
+				<value>org/yeahwa/news/model/Concept.hbm.xml</value>
+				<value>org/yeahwa/news/model/Preference.hbm.xml</value>
+				<value>org/yeahwa/news/model/ClusteredNews.hbm.xml</value>
+				<value>org/yeahwa/news/model/Recommend.hbm.xml</value>
+			    </list>
+		</property>
+	</bean>
+	
+	<bean id="index" class="org.yeahwa.news.action.IndexAction">
+		<property name="userNewDao">
+			<ref bean="userNewDao"/>
+		</property>
+	</bean>
+	<bean id="userRecord" class="org.yeahwa.news.action.UserRecordAction">
+		<property name="userNewDao">
+			<ref bean="userNewDao"/>
+		</property>
+	</bean>
+	
+	<bean id="split" class="org.yeahwa.news.action.SplitAction">
+		<property name="splitWordDao">
+			<ref bean="splitWordDao"/>
+		</property>
+	</bean>
+	
+	<bean id="recommend" class="org.yeahwa.news.action.RecommendAction">
+		<property name="recommendDao">
+			<ref bean="recommendDao"/>
+		</property>
+	</bean>
+	
+	<bean id="cluster" class="org.yeahwa.news.action.ClusterAction">
+		<property name="clusterDao">
+			<ref bean="clusterDao"/>
+		</property>
+	</bean>
+	<bean id="concept" class="org.yeahwa.news.action.ConceptAction">
+		<property name="conceptDao">
+			<ref bean="conceptDao"/>
+		</property>
+	</bean>
+	<bean id="preference" class="org.yeahwa.news.action.PreferenceAction">
+		<property name="preferenceDao">
+			<ref bean="preferenceDao"/>
+		</property>
+	</bean>
+	<bean id="autoRecom" class="org.yeahwa.news.action.AutoRecommendAction">
+	</bean>
+	
+	
+	<bean id="userNewDao" class="org.yeahwa.news.dao.impl.UserNewDAOImpl">
+		<property name="pageUtil">
+			<ref bean="pageUtil"/>
+		</property>
+	</bean>
+	<bean id="splitWordDao" class="org.yeahwa.news.dao.impl.SplitWordDAOImpl">
+		<property name="pageUtil">
+			<ref bean="pageUtil"/>
+		</property>
+	</bean>
+	<bean id="recommendDao" class="org.yeahwa.news.dao.impl.RecommendDAOImpl">
+		<property name="pageUtil">
+			<ref bean="pageUtil"/>
+		</property>
+	</bean>
+	<bean id="clusterDao" class="org.yeahwa.news.dao.impl.ClusterDAOImpl">
+		<property name="pageUtil">
+			<ref bean="pageUtil"/>
+		</property>
+	</bean>
+	<bean id="preferenceDao" class="org.yeahwa.news.dao.impl.PreferenceDAOImpl">
+		<property name="pageUtil">
+			<ref bean="pageUtil"/>
+		</property>
+	</bean>
+	<bean id="conceptDao" class="org.yeahwa.news.dao.impl.ConceptDAOImpl">
+		<property name="pageUtil">
+			<ref bean="pageUtil"/>
+		</property>
+	</bean>
+	
+	<bean id="pageUtil" class="org.yeahwa.news.dao.util.PageUtil">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory"/>
+		</property>	
+	</bean>
+	
+	</beans>

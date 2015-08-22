@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC   
+     "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"   
+     "http://struts.apache.org/dtds/struts-2.0.dtd">
+     
+     
+<struts>
+	<constant name="struts.custom.i18n.resources" value="messages"></constant>
+	
+	<package name="newsplit" namespace="/newsplit" extends="struts-default">
+		<action name="index" class="org.yeahwa.news.action.IndexAction" method="indexView">
+			<result name="success">main.jsp</result>
+		</action>
+		<action name="userRecord" class="org.yeahwa.news.action.UserRecordAction" method="findUserRecord">
+			<result name="success">main.jsp</result>
+		</action>
+		<action name="splitword" class="org.yeahwa.news.action.SplitAction" method="splitWord">
+			<result name="success">split_record.jsp</result>
+		</action>
+		<action name="concept" class="org.yeahwa.news.action.ConceptAction" method="conceptNews">
+			<result name="success">news_map.jsp</result>
+		</action>
+		<action name="cluster" class="org.yeahwa.news.action.ClusterAction" method="clusterNews">
+			<result name="success">news_category.jsp</result>
+		</action>
+		<action name="preference" class="org.yeahwa.news.action.PreferenceAction" method="preferenceUsr">
+			<result name="success">user_preference.jsp</result>
+		</action>
+		<action name="recommend" class="org.yeahwa.news.action.RecommendAction" method="newsRecommend">
+			<result name="success">news_recommend.jsp</result>
+		</action>
+		
+	</package>
+	<package name="newsAjax" namespace="/newsplit" extends="json-default">
+	<action name="autoRecom" class="org.yeahwa.news.action.AutoRecommendAction" method="autoRecomNews">
+		<result type="json" />
+	</action>
+	</package>
+</struts>
